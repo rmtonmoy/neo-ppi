@@ -119,7 +119,7 @@
   #cy {
     width: 100%;
     height: 100%;
-    background: #fafbfe;
+    background: #f0f1f8;
   }
 
   .controls {
@@ -223,7 +223,7 @@
 </div>
 
 <div class="graph-container">
-  <div id="cy"><div class="loading">Loading network...</div></div>
+  <div id="cy"></div>
 
   <div class="controls">
     <button class="ctrl-btn" id="zoom-in" title="Zoom in">+</button>
@@ -406,7 +406,7 @@ async function init() {
         style: {
           'background-color': '#6366f1',
           'label': 'data(label)',
-          'color': '#1a1a2e',
+          'color': '#ffffff',
           'font-size': '14px',
           'text-valign': 'center',
           'text-halign': 'center',
@@ -423,34 +423,34 @@ async function init() {
       {
         selector: 'node[!isDriver][ppiClass="go"]',
         style: {
-          'background-color': '#fef2f2',
+          'background-color': '#ef4444',
           'border-width': 2,
-          'border-color': '#fca5a5',
+          'border-color': '#b91c1c',
           'label': 'data(label)',
-          'color': '#4a5078',
-          'font-size': '9px',
+          'color': '#1a1a2e',
+          'font-size': '10px',
           'text-valign': 'bottom',
           'text-halign': 'center',
-          'text-margin-y': 5,
-          'width': 18,
-          'height': 18,
+          'text-margin-y': 6,
+          'width': 24,
+          'height': 24,
           'font-family': 'Inter, sans-serif',
         }
       },
       {
         selector: 'node[!isDriver][ppiClass="lo"]',
         style: {
-          'background-color': '#f0fdf4',
+          'background-color': '#22c55e',
           'border-width': 2,
-          'border-color': '#86efac',
+          'border-color': '#15803d',
           'label': 'data(label)',
-          'color': '#4a5078',
-          'font-size': '9px',
+          'color': '#1a1a2e',
+          'font-size': '10px',
           'text-valign': 'bottom',
           'text-halign': 'center',
-          'text-margin-y': 5,
-          'width': 18,
-          'height': 18,
+          'text-margin-y': 6,
+          'width': 24,
+          'height': 24,
           'font-family': 'Inter, sans-serif',
         }
       },
@@ -458,14 +458,17 @@ async function init() {
         selector: 'edge',
         style: {
           'line-color': 'data(color)',
-          'width': 2,
-          'opacity': 0.85,
+          'width': 2.5,
+          'opacity': 0.9,
           'curve-style': 'bezier',
           'label': 'data(dsLabel)',
-          'font-size': '7px',
-          'color': '#9ca3c0',
+          'font-size': '8px',
+          'color': '#4a5078',
           'text-rotation': 'autorotate',
           'text-margin-y': -10,
+          'text-background-color': '#fff',
+          'text-background-opacity': 0.8,
+          'text-background-padding': '2px',
           'font-family': 'JetBrains Mono, monospace',
         }
       },
@@ -494,8 +497,13 @@ async function init() {
     maxZoom: 5,
   });
 
-  // Center on driver node
-  cy.fit();
+  // Fit graph to viewport after layout settles
+  cy.ready(() => {
+    cy.fit(undefined, 50);
+    // Center on driver
+    const driver = cy.getElementById(driverNodeId);
+    cy.center(driver);
+  });
 
   // Tooltip on edge hover
   const tooltip = document.getElementById('tooltip');
